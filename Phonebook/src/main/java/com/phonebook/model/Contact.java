@@ -9,7 +9,7 @@ public class Contact {
     private String lastName;
     private String streetAddress;
     private String town;
-    private LocalDate birthDate;
+    private final LocalDate birthDate;
 
     public Contact(int contactID, String phoneNumber, String firstName, String lastName,
                         String streetAddress, String town, LocalDate birthDate) {
@@ -72,5 +72,9 @@ public class Contact {
 
     public String getFullName() {
         return (this.lastName + ", " + this.firstName);
+    }
+
+    public String getRegularName() {
+        return (this.firstName + " " + this.lastName);
     }
 }

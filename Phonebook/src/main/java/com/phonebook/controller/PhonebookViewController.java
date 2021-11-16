@@ -286,9 +286,13 @@ public class PhonebookViewController extends SceneController implements Initiali
             }
             listView.getItems().clear();
 
+            boolean nameMatches;
+            String searchedValue;
+            searchedValue = newValue.replace(",", "").trim().toLowerCase(Locale.ROOT);
             for(Contact contact : phonebookCopy)
             {
-                boolean nameMatches = contact.getFullName().replace(",", "").trim().toLowerCase(Locale.ROOT).contains(newValue.replace(",","").trim().toLowerCase(Locale.ROOT));
+                nameMatches = contact.getFullName().replace(",", "").trim().toLowerCase(Locale.ROOT).contains(searchedValue);
+                nameMatches = nameMatches || contact.getRegularName().trim().toLowerCase(Locale.ROOT).contains(searchedValue);
                 if(nameMatches) {
                     foundContacts.add(contact);
                 }
@@ -309,9 +313,12 @@ public class PhonebookViewController extends SceneController implements Initiali
             }
             listView.getItems().clear();
 
+            boolean phoneNumberMatches;
+            String searchedValue;
+            searchedValue = newValue.replace("+385","0").replaceAll("[^0-9]", "");
             for(Contact contact : phonebookCopy)
             {
-                boolean phoneNumberMatches = contact.getPhoneNumber().replace("+385","0").replaceAll("[^0-9]", "").contains(newValue.replace("+385","0").replaceAll("[^0-9]", ""));
+                phoneNumberMatches = contact.getPhoneNumber().replace("+385","0").replaceAll("[^0-9]", "").contains(searchedValue);
                 if(phoneNumberMatches) {
                     foundContacts.add(contact);
                 }
