@@ -197,7 +197,8 @@ public class PhonebookViewController extends SceneController implements Initiali
                 PhonebookUtil.setAlertIcon(alert);
 
                 if (alert.showAndWait().orElse(null) == ButtonType.OK) {
-                    String update = "UPDATE phonebook.contact " +
+                    String update =
+                            "UPDATE phonebook.contact " +
                             "SET phoneNumber = ?, firstName = ?, lastName = ?, streetAddress = ?, town = ? " +
                             "WHERE contactID = ?";
                     try {
@@ -215,7 +216,7 @@ public class PhonebookViewController extends SceneController implements Initiali
                         preparedStatement.close();
 
                         updateContact(selectedContact);
-                        PhonebookSorter.getInstance().getPhonebookSorter().sort(this.phonebook);
+                        PhonebookSorter.getInstance().getPhonebookSorter().sort(phonebook);
                     } catch (SQLException exception) {
                         exception.printStackTrace();
                     }
@@ -260,7 +261,12 @@ public class PhonebookViewController extends SceneController implements Initiali
                 preparedStatement.executeUpdate();
                 preparedStatement.close();
 
+                listView.getItems().clear();
+                phonebook.addAll(phonebookCopy);
+                PhonebookSorter.getInstance().getPhonebookSorter().sort(phonebook);
                 phonebook.remove(selectedForRemoval);
+                listView.setItems(phonebook);
+                phonebookCopy.remove(selectedForRemoval);
             } catch(Exception exception) {
                 exception.printStackTrace();
             }
@@ -292,6 +298,7 @@ public class PhonebookViewController extends SceneController implements Initiali
                 foundContacts.addAll(phonebookCopy);
             }
 
+            PhonebookSorter.getInstance().getPhonebookSorter().sort(foundContacts);
             listView.setItems(foundContacts);
         });
 
@@ -314,6 +321,7 @@ public class PhonebookViewController extends SceneController implements Initiali
                 foundContacts.addAll(phonebookCopy);
             }
 
+            PhonebookSorter.getInstance().getPhonebookSorter().sort(foundContacts);
             listView.setItems(foundContacts);
         });
     }
